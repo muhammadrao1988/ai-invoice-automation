@@ -30,6 +30,39 @@ quietly "fix" it. It told me.
 The idea behind steps 3 to 5: I don't trust an AI answer just because it looks right, so the tool has to prove its
 own work with arithmetic, and say so when it can't.
 
+## What you get
+
+One Excel file, `out/invoices.xlsx`, with two sheets. A real one from the sample invoices is in
+[`examples/invoices.xlsx`](examples/invoices.xlsx) if you want to open it.
+
+**Sheet "Invoices":** one row per invoice. Rows that need a person are highlighted in yellow.
+
+| File | Status | Supplier | Invoice no. | Date | Currency | Subtotal | Discount | Tax | Total | Reads | What to check | Notes |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 01-northfield-office.pdf | OK | Northfield Office Supplies Ltd | NF-2026-0412 | 2026-11-03 | EUR | 257.70 | 0 | 59.27 | 316.97 | 1 | | |
+| 06-atlas-freight.pdf | **Please check** | Atlas Freight Co. | AF-55610 | 2026-11-08 | EUR | 315.00 | 0 | 72.45 | 412.45 | 2 | Subtotal 315.00 - discount 0.00 + tax 72.45 = 387.45, but the total says 412.45. | |
+| 08-mueller-werkzeuge.pdf | OK | Müller & Söhne Werkzeuge | 2026-004417 | 2026-11-11 | EUR | 1234.50 | 50 | 225.06 | 1409.56 | 1 | | |
+| 11-old-mill-stationery-scan.pdf | OK | Old Mill Stationery | OM-3307 | 2026-11-14 | EUR | 81.00 | 0 | 18.63 | 99.63 | 1 | | Read from a picture (scan or photo). |
+
+(There is also a "Customer" column, left out here to keep the table narrow.)
+
+- **Status** is "OK" when every check passed, otherwise "Please check".
+- **Reads** is how many times the invoice was read: 2 means a sum was off and it was read again.
+- **What to check** says exactly which sum does not agree.
+- **Notes** explains things that are not errors, such as "Read from a picture" or "Subtotal is not printed;
+  calculated from the lines".
+- Numbers are written as numbers, so you can sum and filter them. Dates are always YYYY-MM-DD, whatever the invoice used.
+
+**Sheet "Lines":** one row per invoice line, so you can total by product or supplier.
+
+| File | Invoice no. | Description | Quantity | Unit price | Line total |
+|---|---|---|---|---|---|
+| 01-northfield-office.pdf | NF-2026-0412 | A4 copy paper, box of 5 reams | 6 | 24.50 | 147.00 |
+| 01-northfield-office.pdf | NF-2026-0412 | Ballpoint pens, pack of 50 | 3 | 11.90 | 35.70 |
+| 01-northfield-office.pdf | NF-2026-0412 | Desk organiser, black | 4 | 18.75 | 75.00 |
+
+The same data is also saved as `out/invoices.json`, for other programs to read.
+
 ## Setup
 
 You need Python 3.12 or newer and [uv](https://docs.astral.sh/uv/).
@@ -124,10 +157,5 @@ correct: the collection is computer-made with random numbers, so the invoices do
 - A passed check means the invoice's own sums agree. A misread supplier name would still pass.
 - For pictures in subscription mode, Claude opens the file with one tool (Read) and nothing else. Still, treat
   documents from unknown senders with normal care.
-
-## What's next
-
-This is episode one of a series: manual work turned into automation, then a chatbot done properly (evals,
-hallucination, guardrails). Ideas and bug reports are welcome in the issues.
 
 Built by [Muhammad Rao](https://github.com/muhammadrao1988) with Claude Code. MIT licence.
