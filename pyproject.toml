@@ -5,6 +5,7 @@ description = "Read PDF invoices into one spreadsheet, check every total, and fl
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "anthropic>=2.13.0",
     "openpyxl>=3.1",
     "pydantic>=2.7",
     "pypdf>=5.0",
