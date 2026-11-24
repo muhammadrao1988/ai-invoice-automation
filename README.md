@@ -1,59 +1,44 @@
 # AI invoice automation
 
-Typing invoices into a spreadsheet is slow, and the mistakes are the kind nobody notices until month end. This is
-the first project in a series where I take a manual job and automate it with Claude Code.
+Turn a folder of invoices into one checked spreadsheet, in seconds.
 
-You give it a folder of invoices (PDFs, scans or phone photos). It gives you one spreadsheet, and it tells you which
-invoices you should look at yourself.
+![A folder of invoices goes in, one checked spreadsheet comes out](docs/before-after.png)
 
-```
-$ uv run invoices samples/invoices
+## The problem
 
-12 invoices read in 25 seconds.
-11 passed every check.
-1 need a look:
-  - 06-atlas-freight.pdf: Subtotal 315.00 - discount 0.00 + tax 72.45 = 387.45, but the total says 412.45.
-```
+In many offices, someone opens every invoice and types it into a spreadsheet by hand: supplier, date, each line,
+tax, total.
 
-That last line is the part I care about. The supplier added up their own invoice wrong, and the tool did not
-quietly "fix" it. It told me.
+- It is slow and boring.
+- Typing mistakes are easy to make and hard to notice.
+- Sometimes the invoice itself is wrong, and nobody checks the supplier's sums.
 
-## How it works
+## What this tool does
 
-1. **Read.** Text PDFs are read as text. A scan or a photo has no text, so Claude looks at the page itself.
-2. **Pick out the data.** Supplier, customer, invoice number, date, currency, every line, tax and total.
-3. **Check.** Plain Python, no AI, adds up the lines, discount and tax and compares them with what is printed.
-4. **Read again.** If a sum is off, the invoice is read one more time with the failed check as a hint.
-5. **Flag.** If it is still off, the row is marked "Please check". A number is never changed to make a sum work.
-6. **Write.** One Excel file: an "Invoices" sheet and a "Lines" sheet.
+You point it at a folder of invoices. It works with normal PDFs, scanned PDFs and phone photos (JPG, PNG).
 
-The idea behind steps 3 to 5: I don't trust an AI answer just because it looks right, so the tool has to prove its
-own work with arithmetic, and say so when it can't.
+1. It reads every invoice.
+2. It checks the sums on every invoice.
+3. It writes everything into one Excel file.
+4. It marks the invoices that a person should look at, and says why.
+
+It never changes a number to make a sum work. If something does not add up, it tells you.
 
 ## What you get
 
-One Excel file, `out/invoices.xlsx`, with two sheets. A real one from the sample invoices is in
-[`examples/invoices.xlsx`](examples/invoices.xlsx) if you want to open it.
+One Excel file with two sheets. You can open a real one here: [`examples/invoices.xlsx`](examples/invoices.xlsx).
 
-**Sheet "Invoices":** one row per invoice. Rows that need a person are highlighted in yellow.
+**Sheet 1, "Invoices":** one row for each invoice (the picture above).
 
-| File | Status | Supplier | Invoice no. | Date | Currency | Subtotal | Discount | Tax | Total | Reads | What to check | Notes |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 01-northfield-office.pdf | OK | Northfield Office Supplies Ltd | NF-2026-0412 | 2026-11-03 | EUR | 257.70 | 0 | 59.27 | 316.97 | 1 | | |
-| 06-atlas-freight.pdf | **Please check** | Atlas Freight Co. | AF-55610 | 2026-11-08 | EUR | 315.00 | 0 | 72.45 | 412.45 | 2 | Subtotal 315.00 - discount 0.00 + tax 72.45 = 387.45, but the total says 412.45. | |
-| 08-mueller-werkzeuge.pdf | OK | Müller & Söhne Werkzeuge | 2026-004417 | 2026-11-11 | EUR | 1234.50 | 50 | 225.06 | 1409.56 | 1 | | |
-| 11-old-mill-stationery-scan.pdf | OK | Old Mill Stationery | OM-3307 | 2026-11-14 | EUR | 81.00 | 0 | 18.63 | 99.63 | 1 | | Read from a picture (scan or photo). |
+| Column | What it tells you |
+|---|---|
+| Status | **OK** means every sum is right. **Please check** means a person should look. These rows are yellow. |
+| Supplier, Customer, Invoice no., Date, Currency | Copied from the invoice. Dates are always written the same way: year-month-day. |
+| Subtotal, Discount, Tax, Total | The amounts printed on the invoice, as numbers you can sum and filter. |
+| What to check | The exact problem, for example: "Subtotal 315.00 - discount 0.00 + tax 72.45 = 387.45, but the total says 412.45." |
+| Notes | Extra information that is not an error, for example "Read from a picture". |
 
-(There is also a "Customer" column, left out here to keep the table narrow.)
-
-- **Status** is "OK" when every check passed, otherwise "Please check".
-- **Reads** is how many times the invoice was read: 2 means a sum was off and it was read again.
-- **What to check** says exactly which sum does not agree.
-- **Notes** explains things that are not errors, such as "Read from a picture" or "Subtotal is not printed;
-  calculated from the lines".
-- Numbers are written as numbers, so you can sum and filter them. Dates are always YYYY-MM-DD, whatever the invoice used.
-
-**Sheet "Lines":** one row per invoice line, so you can total by product or supplier.
+**Sheet 2, "Lines":** one row for each line of each invoice.
 
 | File | Invoice no. | Description | Quantity | Unit price | Line total |
 |---|---|---|---|---|---|
@@ -61,101 +46,128 @@ One Excel file, `out/invoices.xlsx`, with two sheets. A real one from the sample
 | 01-northfield-office.pdf | NF-2026-0412 | Ballpoint pens, pack of 50 | 3 | 11.90 | 35.70 |
 | 01-northfield-office.pdf | NF-2026-0412 | Desk organiser, black | 4 | 18.75 | 75.00 |
 
-The same data is also saved as `out/invoices.json`, for other programs to read.
+When it finishes, it also prints a short summary:
 
-## Setup
+```
+12 invoices read in 25 seconds.
+11 passed every check.
+1 need a look:
+  - 06-atlas-freight.pdf: Subtotal 315.00 - discount 0.00 + tax 72.45 = 387.45, but the total says 412.45.
+```
 
-You need Python 3.12 or newer and [uv](https://docs.astral.sh/uv/).
+## How to use it
+
+### Step 1: Install two things
+
+- **uv**, which runs the tool: [install uv](https://docs.astral.sh/uv/getting-started/installation/)
+- **Claude Code**, the AI that reads the invoices: [install Claude Code](https://code.claude.com/docs). Then type
+  `claude` in a terminal once and sign in with your Claude account.
+
+### Step 2: Download this project
 
 ```bash
 git clone https://github.com/muhammadrao1988/ai-invoice-automation.git
 cd ai-invoice-automation
-uv sync
 ```
 
-Then pick **one** of the two ways to reach Claude.
+### Step 3: Try it on the sample invoices
 
-### Option A: your Claude subscription (what I use)
+```bash
+uv run invoices samples/invoices
+```
 
-No API key and no extra bill. The tool calls the Claude Code command line, which uses your Claude login.
+Open `out/invoices.xlsx`. You should see 12 invoices, with one marked "Please check".
 
-1. Install Claude Code: see the [official guide](https://code.claude.com/docs).
-2. Run `claude` once in a terminal and sign in with your Claude account (type `/login` if it does not ask).
-3. Check that it answers: `claude -p "say hello"`
-4. Run the tool: `uv run invoices samples/invoices`
+### Step 4: Use your own invoices
 
-On a server or in CI, where you cannot sign in through a browser, run `claude setup-token` on your own machine.
-It creates a long-lived token for your subscription and tells you how to pass it to the other machine (as the
-`CLAUDE_CODE_OAUTH_TOKEN` environment variable). Treat that token like a password.
+Put your invoices in a folder, then give the tool that folder:
 
-In this mode the tool ignores any `ANTHROPIC_API_KEY` in your environment, on purpose, so you never get an API bill
-by accident.
+```bash
+uv run invoices path/to/your/folder
+```
 
-### Option B: an API key
+The spreadsheet is saved as `out/invoices.xlsx`.
 
-Use this if you have no subscription, or want to run it inside your own product. You pay per invoice.
+### No Claude subscription? Use an API key
 
-1. Create a key in the [Claude Console](https://platform.claude.com/).
-2. Set it and run with `--engine api`:
+An API key is a paid key from Anthropic. You pay a small amount for each invoice. Create one in the
+[Claude Console](https://platform.claude.com/), then:
 
 ```bash
 export ANTHROPIC_API_KEY=sk-ant-...
-uv run invoices samples/invoices --engine api
+uv run invoices path/to/your/folder --engine api
 ```
 
-Keep the key out of the repository. Honest note: I built this mode from the official SDK documentation, and I have
-checked that it fails cleanly without a key or with a wrong one, but I have not yet run it with a paid key.
+Without `--engine api`, the tool uses your Claude sign-in and ignores any API key, so you never get a bill by accident.
 
-### Settings
+I built the API key option from the official documentation. I checked that it stops with a clear message when the key
+is missing or wrong, but I have not yet run it with a paid key.
+
+## How it checks its own work
+
+An AI answer can look right and still be wrong. So the tool does not trust it:
+
+1. The AI reads the invoice and returns the values.
+2. Plain code, with no AI, does the sums: lines, discount, tax, total.
+3. If a sum is wrong, the invoice is read one more time.
+4. If it is still wrong, the row is marked "Please check".
+
+## How well it works
+
+| Test | Invoices | Time | Result |
+|---|---|---|---|
+| My own sample invoices | 12 | 25 seconds | Every value correct. The one wrong invoice was caught. |
+| Public invoices from the internet | 20 | 33 seconds | Every value correct. |
+| Public invoice pictures | 8 | 42 seconds | Every amount correct. |
+
+One honest story: my first version got 100% on my own samples and then failed **all 20** public invoices. They did
+not print a supplier name or line totals, and I had assumed every invoice does. I fixed that. The lesson: test data
+you make yourself is too easy.
+
+## What it cannot do yet
+
+- It has been tested on 40 clean invoices. Real ones are messier, so expect more "Please check" rows.
+- Blurry or tilted phone photos are not tested yet.
+- A passed check means the sums are right. It does not prove that every word, like the supplier name, was read correctly.
+
+<details>
+<summary>More details: settings, tests, running on a server</summary>
+
+**Settings**
 
 | Setting | Default | What it does |
 |---|---|---|
-| `--engine cli` / `--engine api` | `cli` | Subscription login or API key (also `INVOICE_ENGINE`) |
-| `--out` | `out` | Folder for the spreadsheet |
+| `--engine cli` or `--engine api` | `cli` | Use your Claude sign-in, or an API key |
+| `--out` | `out` | Folder where the spreadsheet is saved |
 | `--workers` | `4` | How many invoices are read at the same time |
-| `INVOICE_MODEL` | `sonnet` | Model for the subscription mode |
-| `INVOICE_API_MODEL` | `claude-opus-5-5` | Model for the API mode |
+| `INVOICE_MODEL` | `sonnet` | AI model used with the Claude sign-in |
+| `INVOICE_API_MODEL` | `claude-opus-5-5` | AI model used with an API key |
 
-## Does it actually work?
-
-I tested it three ways, and the second one humbled me.
-
-| Test set | Invoices | Time | Values correct | Pass / flag decision correct |
-|---|---|---|---|---|
-| My own samples (`samples/invoices`) | 12 | 25 s | 96 of 96 fields, 35 of 35 lines | 12 of 12 |
-| Public text invoices | 20 | 33 s | 80 of 80 | 20 of 20 |
-| Public invoice pictures (FATURA) | 8 | 42 s | 21 of 21 printed amounts | 8 of 8 |
-
-**My own samples.** Twelve invented suppliers in four layouts: English, German and American number and date styles,
-two tax rates, discounts, one supplier's wrong total, and one scan. `uv run python eval.py` compares the result with
-the known answers.
-
-**Public text invoices.** Twenty invoices from the Hugging Face dataset
-[AyoubChLin/CompanyDocuments](https://huggingface.co/datasets/AyoubChLin/CompanyDocuments) (Apache-2.0). My first
-version scored 100% on my own samples and then passed **0 of 20** of these. It read them fine. The problem was me:
-I had assumed every invoice prints a supplier name, line totals and a subtotal, and these print none of them, so
-everything was flagged. Now only printed values are checked, missing ones are calculated, and a "Notes" column says
-which. Lesson I keep relearning: test data you write yourself is too kind.
+**Run the tests yourself**
 
 ```bash
-uv run python eval_public.py fetch
+uv run python eval.py                             # my 12 samples, compared with the known answers
+uv run python eval_public.py fetch                # download 20 public invoices
 uv run invoices samples/public --out out-public
-uv run python eval_public.py
+uv run python eval_public.py                      # compare them, without AI
 ```
 
-**Public invoice pictures.** Eight JPG images in eight layouts from the FATURA collection (I used the Hugging Face
-copy `mathieu1256/FATURA2-invoices`; I could not confirm its licence on the original page, so the pictures are not
-in this repository). Every amount the tool read matches the collection's labels. All eight were flagged, and that is
-correct: the collection is computer-made with random numbers, so the invoices do not add up (one prints
-186.67 + 8.39 tax as a total of 192.84), and two have no invoice number.
+The 20 public invoices come from the Hugging Face dataset
+[AyoubChLin/CompanyDocuments](https://huggingface.co/datasets/AyoubChLin/CompanyDocuments) (Apache-2.0). The 8
+pictures come from the FATURA collection. I could not confirm its licence, so those pictures are not in this
+project. They are computer-made with random numbers, so none of them adds up, and the tool correctly marked all 8
+as "Please check".
 
-## What it does not do yet
+**Running on a server, where you cannot sign in through a browser**
 
-- It has seen 40 invoices, all clean. Real ones from many suppliers are messier; expect more "Please check" rows.
-- Pictures were tested on 9 clean, straight images. No blurry or tilted phone photos yet.
-- For the picture test, only totals were verified. The labels do not cover the table rows.
-- A passed check means the invoice's own sums agree. A misread supplier name would still pass.
-- For pictures in subscription mode, Claude opens the file with one tool (Read) and nothing else. Still, treat
-  documents from unknown senders with normal care.
+Run `claude setup-token` on your own computer. It creates a long-lived token for your Claude subscription and tells
+you how to give it to the server (as `CLAUDE_CODE_OAUTH_TOKEN`). Treat it like a password.
+
+**Reading pictures**
+
+For scans and photos, the AI opens the file with one tool and nothing else. Still, treat documents from unknown
+senders with normal care.
+
+</details>
 
 Built by [Muhammad Rao](https://github.com/muhammadrao1988) with Claude Code. MIT licence.
