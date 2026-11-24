@@ -1,0 +1,368 @@
+{
+ "01-northfield-office.pdf": {
+  "supplier": "Northfield Office Supplies Ltd",
+  "invoice_number": "NF-2026-0412",
+  "invoice_date": "2026-11-03",
+  "currency": "EUR",
+  "subtotal": 257.7,
+  "discount": 0.0,
+  "tax": 59.27,
+  "total": 316.97,
+  "lines": [
+   {
+    "description": "A4 copy paper, box of 5 reams",
+    "quantity": 6,
+    "unit_price": 24.5,
+    "line_total": 147.0
+   },
+   {
+    "description": "Ballpoint pens, pack of 50",
+    "quantity": 3,
+    "unit_price": 11.9,
+    "line_total": 35.7
+   },
+   {
+    "description": "Desk organiser, black",
+    "quantity": 4,
+    "unit_price": 18.75,
+    "line_total": 75.0
+   }
+  ],
+  "status": "ok"
+ },
+ "02-harbour-print.pdf": {
+  "supplier": "Harbour Print & Sign",
+  "invoice_number": "INV-7731",
+  "invoice_date": "2026-11-05",
+  "currency": "EUR",
+  "subtotal": 167.0,
+  "discount": 10.0,
+  "tax": 36.11,
+  "total": 193.11,
+  "lines": [
+   {
+    "description": "Business cards, 500 pcs",
+    "quantity": 2,
+    "unit_price": 39.0,
+    "line_total": 78.0
+   },
+   {
+    "description": "Roll-up banner 85x200 cm",
+    "quantity": 1,
+    "unit_price": 89.0,
+    "line_total": 89.0
+   }
+  ],
+  "status": "ok"
+ },
+ "03-bergmann-buerobedarf.pdf": {
+  "supplier": "Bergmann Bürobedarf GmbH",
+  "invoice_number": "RE-2026-1187",
+  "invoice_date": "2026-11-06",
+  "currency": "EUR",
+  "subtotal": 306.05,
+  "discount": 0.0,
+  "tax": 58.15,
+  "total": 364.2,
+  "lines": [
+   {
+    "description": "Kopierpapier A4, 500 Blatt",
+    "quantity": 20,
+    "unit_price": 4.95,
+    "line_total": 99.0
+   },
+   {
+    "description": "Tonerkartusche schwarz",
+    "quantity": 2,
+    "unit_price": 64.9,
+    "line_total": 129.8
+   },
+   {
+    "description": "Ordner breit, grau",
+    "quantity": 15,
+    "unit_price": 2.49,
+    "line_total": 37.35
+   },
+   {
+    "description": "Schreibtischlampe LED",
+    "quantity": 1,
+    "unit_price": 39.9,
+    "line_total": 39.9
+   }
+  ],
+  "status": "ok"
+ },
+ "04-summit-cloud.pdf": {
+  "supplier": "Summit Cloud Services Inc.",
+  "invoice_number": "SC-100482",
+  "invoice_date": "2026-11-01",
+  "currency": "USD",
+  "subtotal": 370.0,
+  "discount": 0.0,
+  "tax": 30.52,
+  "total": 400.52,
+  "lines": [
+   {
+    "description": "Cloud server, standard plan (month)",
+    "quantity": 3,
+    "unit_price": 48.0,
+    "line_total": 144.0
+   },
+   {
+    "description": "Managed backups (month)",
+    "quantity": 3,
+    "unit_price": 12.0,
+    "line_total": 36.0
+   },
+   {
+    "description": "Support hours",
+    "quantity": 2,
+    "unit_price": 95.0,
+    "line_total": 190.0
+   }
+  ],
+  "status": "ok"
+ },
+ "05-greenleaf-catering.pdf": {
+  "supplier": "Greenleaf Catering",
+  "invoice_number": "GC-2291",
+  "invoice_date": "2026-11-07",
+  "currency": "EUR",
+  "subtotal": 443.4,
+  "discount": 0.0,
+  "tax": 64.64,
+  "total": 508.04,
+  "lines": [
+   {
+    "description": "Lunch buffet per person",
+    "quantity": 24,
+    "unit_price": 14.5,
+    "line_total": 348.0
+   },
+   {
+    "description": "Soft drinks, case of 24",
+    "quantity": 3,
+    "unit_price": 16.8,
+    "line_total": 50.4
+   },
+   {
+    "description": "Coffee and tea service",
+    "quantity": 1,
+    "unit_price": 45.0,
+    "line_total": 45.0
+   }
+  ],
+  "status": "ok"
+ },
+ "06-atlas-freight.pdf": {
+  "supplier": "Atlas Freight Co.",
+  "invoice_number": "AF-55610",
+  "invoice_date": "2026-11-08",
+  "currency": "EUR",
+  "subtotal": 315.0,
+  "discount": 0.0,
+  "tax": 72.45,
+  "total": 412.45,
+  "lines": [
+   {
+    "description": "Pallet delivery, Dublin to Cork",
+    "quantity": 2,
+    "unit_price": 135.0,
+    "line_total": 270.0
+   },
+   {
+    "description": "Tail-lift surcharge",
+    "quantity": 2,
+    "unit_price": 22.5,
+    "line_total": 45.0
+   }
+  ],
+  "status": "check"
+ },
+ "07-lumen-electrical.pdf": {
+  "supplier": "Lumen Electrical Wholesale",
+  "invoice_number": "LEW-08841",
+  "invoice_date": "2026-11-10",
+  "currency": "EUR",
+  "subtotal": 425.65,
+  "discount": 0.0,
+  "tax": 97.9,
+  "total": 523.55,
+  "lines": [
+   {
+    "description": "Cable 2.5 mm, per metre",
+    "quantity": 12.5,
+    "unit_price": 1.84,
+    "line_total": 23.0
+   },
+   {
+    "description": "Socket, double, white",
+    "quantity": 10,
+    "unit_price": 6.35,
+    "line_total": 63.5
+   },
+   {
+    "description": "LED panel 60x60",
+    "quantity": 8,
+    "unit_price": 27.9,
+    "line_total": 223.2
+   },
+   {
+    "description": "Junction box IP65",
+    "quantity": 14,
+    "unit_price": 3.2,
+    "line_total": 44.8
+   },
+   {
+    "description": "Cable ties, pack of 100",
+    "quantity": 5,
+    "unit_price": 2.95,
+    "line_total": 14.75
+   },
+   {
+    "description": "Circuit breaker 16A",
+    "quantity": 6,
+    "unit_price": 9.4,
+    "line_total": 56.4
+   }
+  ],
+  "status": "ok"
+ },
+ "08-mueller-werkzeuge.pdf": {
+  "supplier": "Müller & Söhne Werkzeuge",
+  "invoice_number": "2026-004417",
+  "invoice_date": "2026-11-11",
+  "currency": "EUR",
+  "subtotal": 1234.5,
+  "discount": 50.0,
+  "tax": 225.06,
+  "total": 1409.56,
+  "lines": [
+   {
+    "description": "Akku-Bohrschrauber 18 V",
+    "quantity": 3,
+    "unit_price": 289.0,
+    "line_total": 867.0
+   },
+   {
+    "description": "Bit-Satz 32-teilig",
+    "quantity": 5,
+    "unit_price": 24.9,
+    "line_total": 124.5
+   },
+   {
+    "description": "Werkzeugkoffer leer",
+    "quantity": 2,
+    "unit_price": 121.5,
+    "line_total": 243.0
+   }
+  ],
+  "status": "ok"
+ },
+ "09-pixelworks-design.pdf": {
+  "supplier": "Pixelworks Design Studio",
+  "invoice_number": "PW-0098",
+  "invoice_date": "2026-11-12",
+  "currency": "EUR",
+  "subtotal": 650.0,
+  "discount": 0.0,
+  "tax": 0,
+  "total": 650.0,
+  "lines": [
+   {
+    "description": "Logo design, fixed price",
+    "quantity": 1,
+    "unit_price": 650.0,
+    "line_total": 650.0
+   }
+  ],
+  "status": "ok"
+ },
+ "10-karachi-packaging.pdf": {
+  "supplier": "Karachi Packaging Traders",
+  "invoice_number": "KPT/26/1930",
+  "invoice_date": "2026-11-13",
+  "currency": "PKR",
+  "subtotal": 91650.0,
+  "discount": 0.0,
+  "tax": 16497.0,
+  "total": 108147.0,
+  "lines": [
+   {
+    "description": "Corrugated carton 12x10x8 in",
+    "quantity": 500,
+    "unit_price": 78.0,
+    "line_total": 39000.0
+   },
+   {
+    "description": "Packing tape 2 in, brown",
+    "quantity": 120,
+    "unit_price": 145.0,
+    "line_total": 17400.0
+   },
+   {
+    "description": "Bubble wrap roll 50 m",
+    "quantity": 15,
+    "unit_price": 2350.0,
+    "line_total": 35250.0
+   }
+  ],
+  "status": "ok"
+ },
+ "11-old-mill-stationery-scan.pdf": {
+  "supplier": "Old Mill Stationery",
+  "invoice_number": "OM-3307",
+  "invoice_date": "2026-11-14",
+  "currency": "EUR",
+  "subtotal": 81.0,
+  "discount": 0.0,
+  "tax": 18.63,
+  "total": 99.63,
+  "lines": [
+   {
+    "description": "Notebooks A5, pack of 10",
+    "quantity": 4,
+    "unit_price": 12.0,
+    "line_total": 48.0
+   },
+   {
+    "description": "Whiteboard markers, set of 4",
+    "quantity": 6,
+    "unit_price": 5.5,
+    "line_total": 33.0
+   }
+  ],
+  "status": "ok"
+ },
+ "12-brightside-cleaning.pdf": {
+  "supplier": "Brightside Cleaning Services",
+  "invoice_number": "BCS-2026-0457",
+  "invoice_date": "2026-11-15",
+  "currency": "GBP",
+  "subtotal": 218.4,
+  "discount": 0.0,
+  "tax": 43.68,
+  "total": 262.08,
+  "lines": [
+   {
+    "description": "Office cleaning, hours",
+    "quantity": 7.5,
+    "unit_price": 18.0,
+    "line_total": 135.0
+   },
+   {
+    "description": "Window cleaning, visit",
+    "quantity": 1,
+    "unit_price": 60.0,
+    "line_total": 60.0
+   },
+   {
+    "description": "Cleaning supplies",
+    "quantity": 1,
+    "unit_price": 23.4,
+    "line_total": 23.4
+   }
+  ],
+  "status": "ok"
+ }
+}

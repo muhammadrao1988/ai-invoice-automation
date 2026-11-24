@@ -1,0 +1,21 @@
+[project]
+name = "invoice-to-sheet"
+version = "0.1.0"
+description = "Read PDF invoices into one spreadsheet, check every total, and flag the ones a person should look at."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "openpyxl>=3.1",
+    "pydantic>=2.7",
+    "pypdf>=5.0",
+]
+
+[project.scripts]
+invoices = "invoice_to_sheet:main"
+
+[dependency-groups]
+dev = ["reportlab>=4.2"]
+
+[build-system]
+requires = ["uv_build>=0.12.3,<0.13.0"]
+build-backend = "uv_build"
